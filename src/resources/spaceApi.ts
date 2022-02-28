@@ -42,7 +42,7 @@ export class SpaceApi extends Resource {
 
     public getSpaceByKey(key: string, expand?:ExpandableSpaceKey[]): Promise<Space> {
         return this.getOne<Space>(key,{
-            expand: expand
+            expand: expand ? expand.join(',') : undefined
         });
     }
 

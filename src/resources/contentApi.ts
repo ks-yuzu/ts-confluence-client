@@ -469,7 +469,24 @@ export class ContentApi extends Resource {
      * @param attach
      */
     public addAttachment(contentId: string, attach: AttachmentProperties) {
-        return this.updateAttachment(contentId, attach);
+        return this.create({
+            id: `${contentId}/child/attachment`,
+            contentType: HttpContentType.FormData,
+            data: {
+                // tslint:disable-next-line:non-literal-fs-path
+                file: fs.createReadStream(attach.file),
+                comment: attach.comment,
+                minorEdit: attach.minorEdit,
+            },
+	    additionalHeaders: {
+              // https://developer.atlassian.com/cloud/confluence/rest/api-group-content---attachments/#api-wiki-rest-api-content-id-child-attachment-post
+              'X-Atlassian-Token': 'nocheck',
+	    }
+        }).then((attachmentResult: any) => {
+            // the attachment result returns a result similar to a get multiple resources
+            //  request.  So we are going to pull out the results here
+            return attachmentResult.results;
+        });
     }
 
 

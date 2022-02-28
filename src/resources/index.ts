@@ -105,9 +105,14 @@ export abstract class Resource {
             method: params.action,
             url: params.url,
             params: params.params,
-            auth: undefined
+            auth: undefined,
+            maxContentLength: 100 * 1024 * 1024,
+            maxBodyLength: 100 * 1024 * 1024,
         };
-        
+
+        if (this.connection.cookie) {
+          cfg["headers"]["cookie"] = this.connection.cookie
+        }
         if (this.connection.accessToken) {
             cfg["Authorization"] = `Bearer ${this.connection.accessToken}`;
         } else if (this.connection.username && this.connection.apiToken) {

@@ -13,7 +13,8 @@ export type ConfConnectionInfo = {
     host: string,
     username?: string,
     apiToken?: string,
-    accessToken?: string
+    accessToken?: string,
+    cookie?: string,
 }
 
 /**
